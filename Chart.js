@@ -335,11 +335,12 @@ window.Chart = function(context, options){
 			e.clientY = e.targetTouches[0].clientY;
 			tooltipEventHandler(e);
 		}
-	} else {
-		context.canvas.onmousemove = function(e) {
-			tooltipEventHandler(e);
-		}
 	}
+	
+	context.canvas.onmousemove = function(e) {
+		tooltipEventHandler(e);
+	}
+
 	context.canvas.onmouseout = function(e) {
 		if(chart.savedState != null) {
 			context.putImageData(chart.savedState,0,0);
