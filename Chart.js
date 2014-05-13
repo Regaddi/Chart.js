@@ -175,7 +175,8 @@ window.Chart = function(context, options){
 						color: 'rgba(230,230,230,0.25)'
 					},
 					fill: 'rgba(255,255,255,0.25)'
-				}
+				},
+                sticky: false
 			}
 		},
 		options = (options) ? mergeChartConfig(defaults, options) : defaults;
@@ -258,32 +259,34 @@ window.Chart = function(context, options){
 					this.ctx.putImageData(this.highlightState,0,0);
 				}
 			}
-			//if(this.x != x || this.y != y) {
-				var posX = x+options.tooltips.offset.left,
-					posY = y+options.tooltips.offset.top,
-					tpl = tmpl(options.tooltips.labelTemplate, this.data),
-					rectWidth = options.tooltips.padding.left+this.ctx.measureText(tpl).width+options.tooltips.padding.right;
-				if(posX + rectWidth > this.ctx.canvas.width) {
-					posX -= posX-rectWidth < 0 ? posX : rectWidth;
-				}
-				if(posY + 24 > this.ctx.canvas.height) {
-					posY -= 24;
-				}
-				this.ctx.fillStyle = options.tooltips.background;
-				this.ctx.fillRect(posX, posY, rectWidth, 24);
-				if(options.tooltips.border.width > 0) {
-					this.ctx.fillStyle = options.tooltips.order.color;
-					this.ctx.lineWidth = options.tooltips.border.width;
-					this.ctx.strokeRect(posX, posY, rectWidth, 24);
-				}
-				this.ctx.font = options.tooltips.fontStyle+ " "+options.tooltips.fontSize+" " + options.tooltips.fontFamily;
-				this.ctx.fillStyle = options.tooltips.fontColor;
-				this.ctx.textAlign = 'center';
-				this.ctx.textBaseline = 'middle';
-				this.ctx.fillText(tpl, posX+rectWidth/2, posY+12);
-				this.x = x;
-				this.y = y;
-			//}
+            if(options.tooltips.sticky) {
+                x = this.areaObj.x;
+                y = this.areaObj.y;
+            }
+            var posX = x+options.tooltips.offset.left,
+                posY = y+options.tooltips.offset.top,
+                tpl = tmpl(options.tooltips.labelTemplate, this.data),
+                rectWidth = options.tooltips.padding.left+this.ctx.measureText(tpl).width+options.tooltips.padding.right;
+            if(posX + rectWidth > this.ctx.canvas.width) {
+                posX -= posX-rectWidth < 0 ? posX : rectWidth;
+            }
+            if(posY + 24 > this.ctx.canvas.height) {
+                posY -= 24;
+            }
+            this.ctx.fillStyle = options.tooltips.background;
+            this.ctx.fillRect(posX, posY, rectWidth, 24);
+            if(options.tooltips.border.width > 0) {
+                this.ctx.fillStyle = options.tooltips.order.color;
+                this.ctx.lineWidth = options.tooltips.border.width;
+                this.ctx.strokeRect(posX, posY, rectWidth, 24);
+            }
+            this.ctx.font = options.tooltips.fontStyle+ " "+options.tooltips.fontSize+" " + options.tooltips.fontFamily;
+            this.ctx.fillStyle = options.tooltips.fontColor;
+            this.ctx.textAlign = 'center';
+            this.ctx.textBaseline = 'middle';
+            this.ctx.fillText(tpl, posX+rectWidth/2, posY+12);
+            this.x = x;
+            this.y = y;
 		}
 	}
 
