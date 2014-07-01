@@ -3320,6 +3320,9 @@
 		//Number - Spacing between each of the X value sets
 		barValueSpacing : 5,
 
+		//Boolean - Whether bars should be rendered on a percentage base
+		relativeBars : false,
+
 		//String - A legend template
 		legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
 
@@ -3357,6 +3360,10 @@
 						}
 					}
 
+					if(options.relativeBars) {
+						offset = offset / sum * 100;
+					}
+
 					return this.calculateY(offset);
 				},
 				calculateBaseWidth : function(){
@@ -3380,6 +3387,10 @@
 
 					if(!value) {
 						value = datasets[dsIndex].bars[barIndex].value;
+					}
+
+					if(options.relativeBars) {
+						value = value / sum * 100;
 					}
 
 					return this.calculateY(value);
@@ -3498,9 +3509,14 @@
 				helpers.each(self.datasets, function(dataset) {
 					helpers.each(dataset.bars, function(bar, barIndex) {
 						if(!values[barIndex]) values[barIndex] = 0;
-						values[barIndex] += bar.value;
+						if(self.options.relativeBars) {
+							values[barIndex] = 100;
+						} else {
+							values[barIndex] += bar.value;
+						}
 					});
 				});
+				console.log(values);
 				return values;
 			};
 
