@@ -3349,7 +3349,7 @@
 					for(var i = 0; i < datasets.length; i++) {
 						sum += datasets[i].bars[barIndex].value;
 					}
-					for(i = 0; i <= dsIndex; i++) {
+					for(i = dsIndex; i < datasets.length; i++) {
 						if(i === dsIndex && value) {
 							offset += value;
 						} else {
