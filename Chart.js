@@ -3516,7 +3516,6 @@
 						}
 					});
 				});
-				console.log(values);
 				return values;
 			};
 
